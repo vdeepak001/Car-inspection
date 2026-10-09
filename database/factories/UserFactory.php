@@ -26,11 +26,23 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'phone' => fake()->numerify('555#######'),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'is_admin' => false,
             'remember_token' => Str::random(10),
         ];
+    }
+
+    /**
+     * Indicate that the user can open the admin dashboard.
+     */
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_admin' => true,
+        ]);
     }
 
     /**
