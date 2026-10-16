@@ -36,8 +36,9 @@
                 </a>
 
                 @unless (request()->routeIs('login', 'register'))
-                    <nav class="hidden items-center gap-8 text-sm font-medium text-muted md:flex" aria-label="Primary">
+                    <nav class="hidden items-center gap-7 text-sm font-medium text-muted md:flex" aria-label="Primary">
                         <a href="{{ route('home') }}" @class(['text-purple' => request()->routeIs('home'), 'hover:text-purple' => ! request()->routeIs('home')])>Home</a>
+                        <a href="{{ route('pdi.verified') }}" @class(['text-purple' => request()->routeIs('pdi.verified'), 'hover:text-purple' => ! request()->routeIs('pdi.verified')])>Verified Cars</a>
                         <a href="{{ route('about') }}" @class(['text-purple' => request()->routeIs('about'), 'hover:text-purple' => ! request()->routeIs('about')])>About Us</a>
                         <a href="{{ route('pdi') }}" @class(['text-purple' => request()->routeIs('pdi'), 'hover:text-purple' => ! request()->routeIs('pdi')])>Car PDI</a>
                         <a href="{{ route('contact') }}" @class(['text-purple' => request()->routeIs('contact'), 'hover:text-purple' => ! request()->routeIs('contact')])>Contact Us</a>
@@ -66,6 +67,7 @@
                         <summary class="grid size-10 cursor-pointer list-none place-items-center rounded-full border border-mist bg-white [&::-webkit-details-marker]:hidden">Menu</summary>
                         <nav class="absolute right-0 mt-2 flex w-44 flex-col gap-1 rounded-2xl border border-mist bg-white p-3 text-sm shadow-lg" aria-label="Mobile">
                             <a class="rounded-lg px-3 py-2 hover:bg-lilac" href="{{ route('home') }}">Home</a>
+                            <a class="rounded-lg px-3 py-2 hover:bg-lilac" href="{{ route('pdi.verified') }}">Verified Cars</a>
                             <a class="rounded-lg px-3 py-2 hover:bg-lilac" href="{{ route('about') }}">About Us</a>
                             <a class="rounded-lg px-3 py-2 hover:bg-lilac" href="{{ route('pdi') }}">Car PDI</a>
                             <a class="rounded-lg px-3 py-2 hover:bg-lilac" href="{{ route('contact') }}">Contact Us</a>
@@ -78,6 +80,8 @@
         <main>
             @yield('content')
         </main>
+
+        @include('partials.footer')
 
         @include('partials.status-toast')
         @stack('scripts')

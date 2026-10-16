@@ -186,12 +186,10 @@ class InspectionController extends Controller
      */
     public function show(Inspection $inspection): View
     {
-        abort_unless($inspection->user?->is(request()->user('web')), 403);
-
-        $inspection->load('items');
+        $inspection->load(['items', 'user']);
 
         return view('pdi.report', [
-            'title' => 'Inspection Report',
+            'title' => trim($inspection->brand.' '.$inspection->model_name).' — Inspection Report',
             'inspection' => $inspection,
             'checklist' => Inspection::checklist(),
         ]);

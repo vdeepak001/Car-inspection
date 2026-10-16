@@ -258,6 +258,127 @@ class Inspection extends Model
     }
 
     /**
+     * Get the public URL of the cover photo stored in the database.
+     */
+    public function coverPhotoUrl(): string
+    {
+        $firstItem = $this->relationLoaded('items')
+            ? $this->items->first(fn ($item) => filled($item->photo))
+            : $this->items()->whereNotNull('photo')->first();
+
+        $path = $firstItem?->photo;
+
+        if (! filled($path) && is_array($this->photos) && count($this->photos) > 0) {
+            $path = $this->photos[0];
+        }
+
+        if (! filled($path) && filled($this->rc_front_photo)) {
+            $path = $this->rc_front_photo;
+        }
+
+        if (filled($path)) {
+            if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+                return $path;
+            }
+
+            if (file_exists(public_path('storage/'.$path)) || file_exists(storage_path('app/public/'.$path))) {
+                return asset('storage/'.$path);
+            }
+
+            if (file_exists(public_path('images/cars/'.basename($path)))) {
+                return asset('images/cars/'.basename($path));
+            }
+
+            return asset('storage/'.$path);
+        }
+
+        $slug = strtolower($this->brand.'-'.$this->model_name);
+        if (str_contains($slug, 'hector')) {
+            return asset('images/cars/hector.jpg');
+        } elseif (str_contains($slug, 'creta')) {
+            return asset('images/cars/creta.jpg');
+        } elseif (str_contains($slug, 'brezza')) {
+            return asset('images/cars/brezza.jpg');
+        } elseif (str_contains($slug, 'i20')) {
+            return asset('images/cars/i20.jpg');
+        } elseif (str_contains($slug, 'captiva')) {
+            return asset('images/cars/captiva.jpg');
+        } elseif (str_contains($slug, 'octavia')) {
+            return asset('images/cars/octavia.jpg');
+        }
+
+        return asset('images/cars/hero.jpg');
+    }
+
+    /**
+     * Formatted sale price or market value.
+     */
+    public function displayPrice(): string
+    {
+        $raw = $this->sale_price ?: $this->market_value;
+
+        if (! filled($raw)) {
+            return '₹ Price on Request';
+        }
+
+        if (str_starts_with($raw, '₹')) {
+            return $raw;
+        }
+
+        $numeric = str_replace([',', ' '], '', $raw);
+
+        if (is_numeric($numeric)) {
+            return '₹ '.number_format((float) $numeric);
+        }
+
+        return '₹ '.$raw;
+    }
+
+    /**
+     * Formatted variant or year and mileage.
+     */
+    public function displayVariant(): string
+    {
+        return $this->vehicle_variant ?: 'Verified PDI';
+    }
+
+    /**
+     * Human readable date text matching marketplace style (e.g. "Jul 09", "2 days ago").
+     */
+    public function displayDate(): string
+    {
+        $date = $this->inspected_on ?? $this->created_at;
+
+        if (! $date) {
+            return 'Verified';
+        }
+
+        $diffDays = (int) round(abs(now()->diffInDays($date)));
+
+        if ($diffDays === 0) {
+            return 'Today';
+        }
+
+        if ($diffDays === 1) {
+            return '1 day ago';
+        }
+
+        if ($diffDays <= 4) {
+            return "{$diffDays} days ago";
+        }
+
+        return $date->format('M d');
+    }
+
+    /**
+     * Check if vehicle qualifies for ELITE badge.
+     */
+    public function isElite(): bool
+    {
+        return (float) $this->overall_rating >= 9.0;
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

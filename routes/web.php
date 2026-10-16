@@ -7,9 +7,28 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\InspectionController;
+use App\Models\Inspection;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 
 Route::view('/', 'home', ['title' => 'Home'])->name('home');
+
+Route::get('/verified-cars', function () {
+    $inspections = Schema::hasTable('inspections')
+        ? Inspection::query()
+            ->where('status', 'completed')
+            ->with('items')
+            ->latest('inspected_on')
+            ->latest('id')
+            ->get()
+        : collect();
+
+    return view('pdi.verified', [
+        'title' => 'Verified Car Inspections',
+        'inspections' => $inspections,
+    ]);
+})->name('pdi.verified');
+
 Route::view('/about', 'about', ['title' => 'About Us'])->name('about');
 
 Route::get('/contact', [ContactController::class, 'create'])->name('contact');
@@ -24,7 +43,6 @@ Route::post('/pdi', [InspectionController::class, 'store'])
     ->middleware('auth:web')
     ->name('pdi.store');
 Route::get('/pdi/{inspection}', [InspectionController::class, 'show'])
-    ->middleware('auth:web')
     ->name('pdi.show');
 
 Route::middleware('guest:web')->group(function (): void {

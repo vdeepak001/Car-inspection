@@ -211,11 +211,15 @@
                                     <img src="{{ asset('storage/'.$item->photo) }}" alt="" class="size-16 shrink-0 rounded-xl object-cover">
                                 @endif
                                 <span class="min-w-0 flex-1 text-grape/80">{{ $label }}</span>
-                                <span class="flex shrink-0 gap-0.5 {{ \App\Models\Inspection::scoreClass($item->score) }}" aria-label="{{ $item->score }} out of 10">
-                                    @for ($star = 1; $star <= 10; $star++)
-                                        <svg class="size-3.5 {{ $star <= $item->score ? '' : 'opacity-25' }}" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.8 14.7 8.7l6.5.6-4.9 4.2 1.5 6.3L12 16.8 6.2 19.8l1.5-6.3L2.8 9.3l6.5-.6L12 2.8Z" /></svg>
-                                    @endfor
-                                </span>
+                                @if ($item && $item->score !== null)
+                                    <span class="flex shrink-0 gap-0.5 {{ \App\Models\Inspection::scoreClass($item->score) }}" aria-label="{{ $item->score }} out of 10">
+                                        @for ($star = 1; $star <= 10; $star++)
+                                            <svg class="size-3.5 {{ $star <= $item->score ? '' : 'opacity-25' }}" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.8 14.7 8.7l6.5.6-4.9 4.2 1.5 6.3L12 16.8 6.2 19.8l1.5-6.3L2.8 9.3l6.5-.6L12 2.8Z" /></svg>
+                                        @endfor
+                                    </span>
+                                @else
+                                    <span class="text-xs text-muted italic">Not recorded</span>
+                                @endif
                             </li>
                         @endforeach
                     </ul>
