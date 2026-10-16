@@ -9,7 +9,36 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['user_id', 'brand', 'model_name', 'location', 'inspector', 'vin', 'engine_number', 'inspected_on', 'overall_rating', 'status', 'photos'])]
+#[Fillable([
+    'user_id',
+    'brand',
+    'model_name',
+    'vehicle_number',
+    'chassis_number',
+    'vehicle_variant',
+    'location',
+    'inspector',
+    'vin',
+    'engine_number',
+    'inspected_on',
+    'rc_status',
+    'rc_front_photo',
+    'rc_back_photo',
+    'rc_valid_until',
+    'insurance_type',
+    'insurance_photo',
+    'insurance_valid_until',
+    'approx_expense',
+    'market_value',
+    'sale_price',
+    'file_number',
+    'rto_location',
+    'customer_name',
+    'remark',
+    'overall_rating',
+    'status',
+    'photos',
+])]
 class Inspection extends Model
 {
     /** @use HasFactory<InspectionFactory> */
@@ -237,6 +266,8 @@ class Inspection extends Model
     {
         return [
             'inspected_on' => 'date',
+            'rc_valid_until' => 'date',
+            'insurance_valid_until' => 'date',
             'overall_rating' => 'decimal:1',
             'photos' => 'array',
         ];

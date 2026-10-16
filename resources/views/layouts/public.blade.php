@@ -8,9 +8,12 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800" rel="stylesheet">
 
-        @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
+        @if (file_exists(public_path('hot')))
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @else
+            @if (file_exists(public_path('build/manifest.json')))
+                @vite(['resources/css/app.css', 'resources/js/app.js'])
+            @endif
             <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
             <style type="text/tailwindcss">
                 @theme {

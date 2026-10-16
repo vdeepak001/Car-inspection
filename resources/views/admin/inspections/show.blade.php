@@ -83,12 +83,60 @@
                             <div class="datagrid-content">{{ $inspection->model_name }}</div>
                         </div>
                         <div class="datagrid-item">
+                            <div class="datagrid-title">Vehicle Number</div>
+                            <div class="datagrid-content text-uppercase fw-bold">{{ $inspection->vehicle_number ?: 'Not provided' }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">Chassis Number</div>
+                            <div class="datagrid-content text-uppercase fw-bold font-monospace">{{ $inspection->chassis_number ?: ($inspection->vin ?: 'Not provided') }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">Variant</div>
+                            <div class="datagrid-content">{{ $inspection->vehicle_variant ?: 'Not provided' }}</div>
+                        </div>
+                        <div class="datagrid-item">
                             <div class="datagrid-title">Location</div>
                             <div class="datagrid-content">{{ $inspection->location }}</div>
                         </div>
                         <div class="datagrid-item">
-                            <div class="datagrid-title">VIN</div>
-                            <div class="datagrid-content">{{ $inspection->vin }}</div>
+                            <div class="datagrid-title">RTO Location</div>
+                            <div class="datagrid-content">{{ $inspection->rto_location ?: 'Not provided' }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">RC Status</div>
+                            <div class="datagrid-content">{{ $inspection->rc_status ?: 'Not provided' }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">RC Valid Date</div>
+                            <div class="datagrid-content">{{ $inspection->rc_valid_until?->format('d M Y') ?? 'Not provided' }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">Insurance</div>
+                            <div class="datagrid-content">{{ $inspection->insurance_type ?: 'Not provided' }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">Insurance Valid Date</div>
+                            <div class="datagrid-content">{{ $inspection->insurance_valid_until?->format('d M Y') ?? 'Not provided' }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">Customer Name</div>
+                            <div class="datagrid-content">{{ $inspection->customer_name ?: 'Not provided' }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">Approx Expense</div>
+                            <div class="datagrid-content">{{ $inspection->approx_expense ?: 'Not provided' }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">Market Value</div>
+                            <div class="datagrid-content">{{ $inspection->market_value ?: 'Not provided' }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">Sale Price</div>
+                            <div class="datagrid-content">{{ $inspection->sale_price ?: 'Not provided' }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">File Number</div>
+                            <div class="datagrid-content">{{ $inspection->file_number ?: 'Not provided' }}</div>
                         </div>
                         <div class="datagrid-item">
                             <div class="datagrid-title">Engine number</div>
@@ -98,7 +146,35 @@
                             <div class="datagrid-title">Saved</div>
                             <div class="datagrid-content">{{ $inspection->created_at?->format('d M Y H:i') }}</div>
                         </div>
+                        @if ($inspection->remark)
+                            <div class="datagrid-item w-100">
+                                <div class="datagrid-title">Remark</div>
+                                <div class="datagrid-content">{{ $inspection->remark }}</div>
+                            </div>
+                        @endif
                     </div>
+                    @if ($inspection->rc_front_photo || $inspection->rc_back_photo || $inspection->insurance_photo)
+                        <div class="mt-4 pt-3 border-top">
+                            <div class="fw-bold mb-2">Uploaded Documents</div>
+                            <div class="d-flex flex-wrap gap-2">
+                                @if ($inspection->rc_front_photo)
+                                    <a href="{{ asset('storage/'.$inspection->rc_front_photo) }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary">
+                                        <i class="ti ti-file me-1"></i> RC Front
+                                    </a>
+                                @endif
+                                @if ($inspection->rc_back_photo)
+                                    <a href="{{ asset('storage/'.$inspection->rc_back_photo) }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary">
+                                        <i class="ti ti-file me-1"></i> RC Back
+                                    </a>
+                                @endif
+                                @if ($inspection->insurance_photo)
+                                    <a href="{{ asset('storage/'.$inspection->insurance_photo) }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary">
+                                        <i class="ti ti-shield me-1"></i> Insurance Policy
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

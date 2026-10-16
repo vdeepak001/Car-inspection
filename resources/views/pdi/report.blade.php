@@ -18,13 +18,78 @@
 
         <div class="rounded-2xl border border-mist bg-white p-6">
             <h2 class="text-lg font-bold">Inspection Details</h2>
-            <dl class="mt-4 space-y-3 text-sm">
+            <dl class="mt-4 grid gap-3 sm:grid-cols-2 text-sm">
                 <div class="flex justify-between gap-4"><dt class="text-muted">Inspector</dt><dd class="font-medium">{{ $inspection->inspector }}</dd></div>
-                <div class="flex justify-between gap-4"><dt class="text-muted">Date</dt><dd class="font-medium">{{ $inspection->inspected_on?->format('d M Y') }}</dd></div>
-                <div class="flex justify-between gap-4"><dt class="text-muted">Brand</dt><dd class="font-medium">{{ $inspection->brand }}</dd></div>
-                <div class="flex justify-between gap-4"><dt class="text-muted">Model</dt><dd class="font-medium">{{ $inspection->model_name }}</dd></div>
-                <div class="flex justify-between gap-4"><dt class="text-muted">VIN</dt><dd class="font-medium">{{ $inspection->vin }}</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-muted">Date of PDI</dt><dd class="font-medium">{{ $inspection->inspected_on?->format('d M Y') }}</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-muted">Brand & Model</dt><dd class="font-medium">{{ $inspection->brand }} {{ $inspection->model_name }}</dd></div>
+                @if ($inspection->vehicle_variant)
+                    <div class="flex justify-between gap-4"><dt class="text-muted">Variant</dt><dd class="font-medium">{{ $inspection->vehicle_variant }}</dd></div>
+                @endif
+                @if ($inspection->vehicle_number)
+                    <div class="flex justify-between gap-4"><dt class="text-muted">Vehicle No.</dt><dd class="font-medium font-mono uppercase">{{ $inspection->vehicle_number }}</dd></div>
+                @endif
+                <div class="flex justify-between gap-4"><dt class="text-muted">Chassis / VIN</dt><dd class="font-medium font-mono uppercase">{{ $inspection->chassis_number ?: $inspection->vin }}</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-muted">Location</dt><dd class="font-medium">{{ $inspection->location }}</dd></div>
+                @if ($inspection->rto_location)
+                    <div class="flex justify-between gap-4"><dt class="text-muted">RTO Location</dt><dd class="font-medium">{{ $inspection->rto_location }}</dd></div>
+                @endif
+                @if ($inspection->rc_status)
+                    <div class="flex justify-between gap-4"><dt class="text-muted">RC Status</dt><dd class="font-medium">{{ $inspection->rc_status }}</dd></div>
+                @endif
+                @if ($inspection->rc_valid_until)
+                    <div class="flex justify-between gap-4"><dt class="text-muted">RC Valid Date</dt><dd class="font-medium">{{ $inspection->rc_valid_until->format('d M Y') }}</dd></div>
+                @endif
+                @if ($inspection->insurance_type)
+                    <div class="flex justify-between gap-4"><dt class="text-muted">Insurance</dt><dd class="font-medium">{{ $inspection->insurance_type }}</dd></div>
+                @endif
+                @if ($inspection->insurance_valid_until)
+                    <div class="flex justify-between gap-4"><dt class="text-muted">Insurance Valid Date</dt><dd class="font-medium">{{ $inspection->insurance_valid_until->format('d M Y') }}</dd></div>
+                @endif
+                @if ($inspection->customer_name)
+                    <div class="flex justify-between gap-4"><dt class="text-muted">Customer Name</dt><dd class="font-medium">{{ $inspection->customer_name }}</dd></div>
+                @endif
+                @if ($inspection->approx_expense)
+                    <div class="flex justify-between gap-4"><dt class="text-muted">Approx Expense</dt><dd class="font-medium">{{ $inspection->approx_expense }}</dd></div>
+                @endif
+                @if ($inspection->market_value)
+                    <div class="flex justify-between gap-4"><dt class="text-muted">Market Value</dt><dd class="font-medium">{{ $inspection->market_value }}</dd></div>
+                @endif
+                @if ($inspection->sale_price)
+                    <div class="flex justify-between gap-4"><dt class="text-muted">Sale Price</dt><dd class="font-medium">{{ $inspection->sale_price }}</dd></div>
+                @endif
+                @if ($inspection->file_number)
+                    <div class="flex justify-between gap-4"><dt class="text-muted">File No.</dt><dd class="font-medium">{{ $inspection->file_number }}</dd></div>
+                @endif
+                @if ($inspection->remark)
+                    <div class="sm:col-span-2 flex flex-col gap-1 border-t border-mist/60 pt-2"><dt class="text-muted">Remark</dt><dd class="font-medium whitespace-pre-line">{{ $inspection->remark }}</dd></div>
+                @endif
             </dl>
+
+            @if ($inspection->rc_front_photo || $inspection->rc_back_photo || $inspection->insurance_photo)
+                <div class="mt-6 border-t border-mist pt-4">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-purple">Uploaded Documents</h3>
+                    <div class="mt-3 grid gap-3 sm:grid-cols-3 text-xs">
+                        @if ($inspection->rc_front_photo)
+                            <a href="{{ asset('storage/'.$inspection->rc_front_photo) }}" target="_blank" rel="noopener" class="flex items-center gap-2 rounded-xl border border-mist bg-lilac/30 p-2.5 font-medium text-grape hover:border-purple">
+                                <svg class="size-4 shrink-0 text-purple" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+                                <span class="truncate">RC Front Document</span>
+                            </a>
+                        @endif
+                        @if ($inspection->rc_back_photo)
+                            <a href="{{ asset('storage/'.$inspection->rc_back_photo) }}" target="_blank" rel="noopener" class="flex items-center gap-2 rounded-xl border border-mist bg-lilac/30 p-2.5 font-medium text-grape hover:border-purple">
+                                <svg class="size-4 shrink-0 text-purple" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+                                <span class="truncate">RC Back Document</span>
+                            </a>
+                        @endif
+                        @if ($inspection->insurance_photo)
+                            <a href="{{ asset('storage/'.$inspection->insurance_photo) }}" target="_blank" rel="noopener" class="flex items-center gap-2 rounded-xl border border-mist bg-lilac/30 p-2.5 font-medium text-grape hover:border-purple">
+                                <svg class="size-4 shrink-0 text-purple" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                <span class="truncate">Insurance Document</span>
+                            </a>
+                        @endif
+                    </div>
+                </div>
+            @endif
         </div>
 
         <details class="group overflow-hidden rounded-2xl border border-mist bg-white">

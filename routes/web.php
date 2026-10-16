@@ -16,6 +16,7 @@ Route::get('/contact', [ContactController::class, 'create'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 Route::get('/pdi', [InspectionController::class, 'create'])->name('pdi');
+Route::post('/pdi/options', [InspectionController::class, 'storeOption'])->name('pdi.options');
 Route::post('/pdi/photo', [InspectionController::class, 'uploadPhoto'])
     ->middleware('auth:web')
     ->name('pdi.photo');
