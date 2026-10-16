@@ -30,15 +30,9 @@
     <body class="min-h-screen bg-lilac font-sans text-grape antialiased">
         <header class="sticky top-0 z-40 border-b border-white/80 bg-white/75 backdrop-blur-md">
             <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3.5">
-                <a href="{{ route('home') }}" class="flex items-center gap-2 text-lg font-extrabold tracking-tight">
-                    <span class="grid size-9 place-items-center rounded-full bg-purple text-white">
-                        <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.5 5 8.5A2 2 0 0 1 6.8 7.2h10.4A2 2 0 0 1 19 8.5l2 5M5 16.5h.01M19 16.5h.01M4 13.5h16v3.2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3.2Z" />
-                            <circle cx="7.5" cy="16.5" r="1.4" />
-                            <circle cx="16.5" cy="16.5" r="1.4" />
-                        </svg>
-                    </span>
-                    CarPDI
+                <a href="{{ route('home') }}" class="flex items-center gap-2.5 text-lg font-extrabold tracking-tight">
+                    <img src="{{ asset('images/logo_theme.png') }}" alt="Mangal Finance" class="h-9 w-auto object-contain">
+                    <span class="border-l border-mist pl-2.5 text-grape font-bold text-base">CarPDI</span>
                 </a>
 
                 @unless (request()->routeIs('login', 'register'))
@@ -86,5 +80,6 @@
         </main>
 
         @include('partials.status-toast')
+        @stack('scripts')
     </body>
 </html>

@@ -76,7 +76,7 @@ test('saves every section photo and shows the overall rating', function () {
     expect($inspection)->not->toBeNull()
         ->and($inspection->items)->toHaveCount(count(Inspection::checklistItems()))
         ->and((float) $inspection->overall_rating)->toBe($expected)
-        ->and($inspection->status)->toBe('completed')
+        ->and($inspection->status)->toBe('pending')
         ->and($inspection->user->is($user))->toBeTrue();
 
     Storage::disk('public')->assertExists($inspection->items->first()->photo);
@@ -84,10 +84,11 @@ test('saves every section photo and shows the overall rating', function () {
     $this->get(route('pdi.show', $inspection))
         ->assertOk()
         ->assertSee('Overall Rating')
-        ->assertSee('COMPLETED')
+        ->assertSee('PENDING')
         ->assertSee('Dolly Pravin Kankariya')
         ->assertSee(number_format($expected, 1).'/10')
-        ->assertSee('Photos ('.$inspection->items->count().')');
+        ->assertSee('Photos ('.$inspection->items->count().')')
+        ->assertSee('Download PDF');
 
     expect(strlen($inspection->getRouteKey()))->toBe(5)
         ->and(parse_url(route('pdi.show', $inspection), PHP_URL_PATH))->not->toBe('/pdi/'.$inspection->getKey());

@@ -54,9 +54,12 @@
         }
     </style>
     <section class="mx-auto max-w-5xl px-4 sm:px-6 py-10">
-        <div class="mb-8">
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-grape tracking-tight">Car PDI Inspection</h1>
-            <p class="mt-2 text-sm sm:text-base text-muted max-w-3xl">Complete vehicle details, verify registration and insurance documentation, and rate each checklist check with photos.</p>
+        <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <h1 class="text-3xl sm:text-4xl font-extrabold text-grape tracking-tight">Car PDI Inspection</h1>
+                <p class="mt-2 text-sm sm:text-base text-muted max-w-3xl">Complete vehicle details, verify registration and insurance documentation, and rate each checklist check with photos.</p>
+            </div>
+            <img src="{{ asset('images/logo_theme.png') }}" alt="Mangal Finance" class="h-12 sm:h-14 w-auto object-contain self-start sm:self-center shrink-0">
         </div>
 
         <form method="POST" action="{{ route('pdi.store') }}" enctype="multipart/form-data" class="space-y-6">
@@ -110,14 +113,17 @@
 
             {{-- Card 1: Inspection Overview --}}
             <div class="pdi-card">
-                <div class="flex items-center gap-2.5 border-b border-mist pb-3 mb-5">
-                    <span class="grid size-8 place-items-center rounded-lg bg-lilac text-purple">
-                        <svg class="size-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                    </span>
-                    <div>
-                        <h2 class="text-base font-bold text-grape">1. Inspection Logistics</h2>
-                        <p class="text-xs text-muted">Inspector, inspection date, and location details</p>
+                <div class="flex items-center justify-between border-b border-mist pb-3 mb-5">
+                    <div class="flex items-center gap-2.5">
+                        <span class="grid size-8 place-items-center rounded-lg bg-lilac text-purple">
+                            <svg class="size-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </span>
+                        <div>
+                            <h2 class="text-base font-bold text-grape">1. Inspection Logistics</h2>
+                            <p class="text-xs text-muted">Inspector, inspection date, and location details</p>
+                        </div>
                     </div>
+                    <img src="{{ asset('images/logo_theme.png') }}" alt="Mangal Finance" class="h-7 w-auto object-contain hidden sm:block">
                 </div>
 
                 <div class="pdi-grid">

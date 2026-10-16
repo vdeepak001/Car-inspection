@@ -59,4 +59,7 @@ Route::middleware(['auth:admin', 'admin'])->prefix('admin')->name('admin.')->gro
     Route::resource('users', UserController::class)->except(['index']);
     Route::get('inspections', [AdminInspectionController::class, 'index'])->name('inspections.index');
     Route::get('inspections/{inspection}', [AdminInspectionController::class, 'show'])->name('inspections.show');
+    Route::put('inspections/{inspection}', [AdminInspectionController::class, 'update'])->name('inspections.update');
+    Route::patch('inspections/{inspection}/status', [AdminInspectionController::class, 'updateStatus'])->name('inspections.status');
+    Route::put('inspections/{inspection}/items/{itemKey}', [AdminInspectionController::class, 'updateItem'])->name('inspections.items.update');
 });

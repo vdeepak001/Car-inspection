@@ -139,7 +139,7 @@ class InspectionController extends Controller
                 'rc_back_photo' => $rcBackPath,
                 'insurance_photo' => $insurancePath,
                 'user_id' => $request->user('web')->id,
-                'status' => 'completed',
+                'status' => 'pending',
             ]);
 
             // Persist any new options to the database
