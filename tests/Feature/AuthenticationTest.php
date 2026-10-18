@@ -95,23 +95,22 @@ test('requires an email and password to log in', function () {
     $this->assertGuest('web');
 });
 
-test('returns 429 after five failed website login attempts', function () {
+test('does not throttle after multiple failed website login attempts', function () {
     User::factory()->create([
         'email' => 'ava@example.com',
         'password' => 'password',
     ]);
 
-    foreach (range(1, 5) as $attempt) {
-        $this->post(route('login.store'), [
-            'email' => 'ava@example.com',
-            'password' => 'wrong-password',
-        ])->assertRedirect();
+    foreach (range(1, 6) as $attempt) {
+        $this->from(route('login'))
+            ->post(route('login.store'), [
+                'email' => 'ava@example.com',
+                'password' => 'wrong-password',
+            ])->assertRedirect(route('login'))
+            ->assertSessionHasErrors('email');
     }
 
-    $this->post(route('login.store'), [
-        'email' => 'ava@example.com',
-        'password' => 'wrong-password',
-    ])->assertTooManyRequests();
+    $this->assertGuest('web');
 });
 
 test('logs a visitor out and shows the login button again', function () {

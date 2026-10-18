@@ -47,21 +47,15 @@ Route::get('/pdi/{inspection}', [InspectionController::class, 'show'])
 
 Route::middleware('guest:web')->group(function (): void {
     Route::get('/login', [LoginController::class, 'create'])->name('login');
-    Route::post('/login', [LoginController::class, 'store'])
-        ->middleware('throttle:login')
-        ->name('login.store');
-    Route::post('/login/google', [LoginController::class, 'google'])
-        ->middleware('throttle:login')
-        ->name('login.google');
+    Route::post('/login', [LoginController::class, 'store'])->name('login.store');
+    Route::post('/login/google', [LoginController::class, 'google'])->name('login.google');
     Route::get('/register', [RegisterController::class, 'create'])->name('register');
     Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 });
 
 Route::middleware('guest:admin')->group(function (): void {
     Route::get('/admin/login', [SessionController::class, 'create'])->name('admin.login');
-    Route::post('/admin/login', [SessionController::class, 'store'])
-        ->middleware('throttle:login')
-        ->name('admin.login.store');
+    Route::post('/admin/login', [SessionController::class, 'store'])->name('admin.login.store');
 });
 
 Route::post('/logout', [LoginController::class, 'destroy'])
