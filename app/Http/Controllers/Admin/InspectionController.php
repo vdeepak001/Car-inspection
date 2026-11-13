@@ -107,7 +107,7 @@ class InspectionController extends Controller
             'score' => ['required', 'integer', 'between:1,10'],
             'label' => ['nullable', 'string', 'max:255'],
             'section' => ['nullable', 'string', 'max:100'],
-            'photo' => ['nullable', 'file', 'mimes:jpeg,jpg,png,webp,pdf', 'max:10240'],
+            'photo' => ['nullable', 'file', 'mimes:jpeg,jpg,png,webp,pdf,mp4,mov,webm,avi,3gp,mkv', 'max:51200'],
         ]);
 
         $item = $inspection->items()->firstOrNew(['item_key' => $itemKey]);

@@ -251,12 +251,19 @@
                                             <span class="text-body fw-bold ms-1">{{ $item->score }}/10</span>
                                         </div>
                                         @if ($item->photo)
-                                            <a href="{{ asset('storage/'.$item->photo) }}" target="_blank" rel="noopener" class="d-block">
-                                                <img src="{{ asset('storage/'.$item->photo) }}" alt="{{ $item->label }}" class="img-fluid rounded w-100 border" style="height: 180px; object-fit: cover;">
-                                            </a>
+                                            @php
+                                                $isItemVideo = preg_match('/\.(mp4|mov|webm|avi|3gp|mkv)$/i', $item->photo);
+                                            @endphp
+                                            @if ($isItemVideo)
+                                                <video src="{{ asset('storage/'.$item->photo) }}" controls playsinline class="rounded w-100 border bg-black" style="height: 180px; object-fit: cover;"></video>
+                                            @else
+                                                <a href="{{ asset('storage/'.$item->photo) }}" target="_blank" rel="noopener" class="d-block">
+                                                    <img src="{{ asset('storage/'.$item->photo) }}" alt="{{ $item->label }}" class="img-fluid rounded w-100 border" style="height: 180px; object-fit: cover;">
+                                                </a>
+                                            @endif
                                         @else
                                             <div class="bg-light rounded d-flex align-items-center justify-content-center text-secondary border" style="height: 180px;">
-                                                <span><i class="ti ti-photo-off me-1"></i> No photo</span>
+                                                <span><i class="ti ti-photo-off me-1"></i> No media</span>
                                             </div>
                                         @endif
                                     @else
@@ -401,15 +408,22 @@
                                                 <input type="text" name="label" class="form-control" value="{{ old('label', $item->label) }}" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label">Check Photo {{ $item->photo ? '(Upload new to replace)' : '' }}</label>
+                                                <label class="form-label">Check Photo / Video {{ $item->photo ? '(Upload new to replace)' : '' }}</label>
                                                 @if ($item->photo)
+                                                    @php
+                                                        $isItemVideo = preg_match('/\.(mp4|mov|webm|avi|3gp|mkv)$/i', $item->photo);
+                                                    @endphp
                                                     <div class="mb-2">
-                                                        <img src="{{ asset('storage/'.$item->photo) }}" alt="Current Photo" class="rounded border" style="height: 100px; width: 140px; object-fit: cover;">
-                                                        <div class="small text-muted mt-1">Current inspection photo</div>
+                                                        @if ($isItemVideo)
+                                                            <video src="{{ asset('storage/'.$item->photo) }}" controls playsinline class="rounded border bg-black" style="height: 100px; width: 140px; object-fit: cover;"></video>
+                                                        @else
+                                                            <img src="{{ asset('storage/'.$item->photo) }}" alt="Current Media" class="rounded border" style="height: 100px; width: 140px; object-fit: cover;">
+                                                        @endif
+                                                        <div class="small text-muted mt-1">Current inspection file</div>
                                                     </div>
                                                 @endif
-                                                <input type="file" name="photo" class="form-control" accept="image/*">
-                                                <div class="form-hint small">Supported formats: JPG, PNG, WEBP. Max size: 10MB.</div>
+                                                <input type="file" name="photo" class="form-control" accept="image/*,video/*">
+                                                <div class="form-hint small">Supported formats: JPG, PNG, WEBP, MP4, MOV, WEBM. Max size: 50MB.</div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">

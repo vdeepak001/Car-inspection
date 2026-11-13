@@ -179,14 +179,21 @@
             {{-- Photos Summary --}}
             <details class="group overflow-hidden rounded-2xl border border-mist bg-white" open>
                 <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5">
-                    <span class="text-lg font-bold">Photos ({{ $saved->count() }})</span>
+                    <span class="text-lg font-bold">Media & Photos ({{ $saved->count() }})</span>
                     <span class="grid size-9 shrink-0 place-items-center rounded-full bg-lilac text-purple no-print">
                         <svg class="size-5 transition duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" /></svg>
                     </span>
                 </summary>
                 <div class="grid grid-cols-3 gap-3 border-t border-mist p-6 sm:grid-cols-5">
                     @foreach ($saved as $item)
-                        <img src="{{ asset('storage/'.$item->photo) }}" alt="{{ $item->label }}" class="aspect-square w-full rounded-xl object-cover">
+                        @php
+                            $isItemVideo = $item->photo && preg_match('/\.(mp4|mov|webm|avi|3gp|mkv)$/i', $item->photo);
+                        @endphp
+                        @if ($isItemVideo)
+                            <video src="{{ asset('storage/'.$item->photo) }}" controls playsinline class="aspect-square w-full rounded-xl object-cover bg-black"></video>
+                        @else
+                            <img src="{{ asset('storage/'.$item->photo) }}" alt="{{ $item->label }}" class="aspect-square w-full rounded-xl object-cover">
+                        @endif
                     @endforeach
                 </div>
             </details>
@@ -208,7 +215,14 @@
                             @php $item = $saved->get($key); @endphp
                             <li class="flex items-center gap-4 py-4 text-sm">
                                 @if ($item?->photo)
-                                    <img src="{{ asset('storage/'.$item->photo) }}" alt="" class="size-16 shrink-0 rounded-xl object-cover">
+                                    @php
+                                        $isItemVideo = preg_match('/\.(mp4|mov|webm|avi|3gp|mkv)$/i', $item->photo);
+                                    @endphp
+                                    @if ($isItemVideo)
+                                        <video src="{{ asset('storage/'.$item->photo) }}" controls playsinline class="size-16 shrink-0 rounded-xl object-cover bg-black"></video>
+                                    @else
+                                        <img src="{{ asset('storage/'.$item->photo) }}" alt="" class="size-16 shrink-0 rounded-xl object-cover">
+                                    @endif
                                 @endif
                                 <span class="min-w-0 flex-1 text-grape/80">{{ $label }}</span>
                                 @if ($item && $item->score !== null)

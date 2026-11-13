@@ -16,7 +16,7 @@ test('shows a scored checklist for every section', function () {
         ->assertSee('Engine Bay & Fluids')
         ->assertSee('Interior & Electronics')
         ->assertSee('Safety Features')
-        ->assertSee('Paint condition')
+        ->assertSee('FRONT PHOTO FULL')
         ->assertSee('00/10');
 });
 

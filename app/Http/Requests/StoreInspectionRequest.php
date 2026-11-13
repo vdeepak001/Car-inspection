@@ -39,6 +39,12 @@ class StoreInspectionRequest extends FormRequest
                 'vin' => strtoupper(trim((string) $this->input('vin'))),
             ]);
         }
+
+        if (! $this->filled('vehicle_number') && $this->filled('rto_location')) {
+            $this->merge(['vehicle_number' => $this->input('rto_location')]);
+        } elseif (! $this->filled('rto_location') && $this->filled('vehicle_number')) {
+            $this->merge(['rto_location' => $this->input('vehicle_number')]);
+        }
     }
 
     /**

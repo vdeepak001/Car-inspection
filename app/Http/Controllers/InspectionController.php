@@ -61,7 +61,7 @@ class InspectionController extends Controller
     {
         $data = $request->validate([
             'item' => ['required', 'string', Rule::in(array_keys(Inspection::checklistItems()))],
-            'photo' => ['required', 'image', 'max:8192'],
+            'photo' => ['required', 'file', 'mimes:jpeg,jpg,png,webp,gif,mp4,mov,webm,avi,3gp,mkv', 'max:51200'],
         ]);
 
         $photos = $this->storedPhotos($request);
